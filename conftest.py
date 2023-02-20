@@ -7,7 +7,7 @@ from datetime import datetime
 def browser():
     # driver = webdriver.Chrome()
     driver = webdriver.Remote(
-        command_executor='http://172.17.0.1:4444',
+        command_executor='http://localhost:4444',
         desired_capabilities={'browserName': 'chrome'})
     yield driver
     driver.quit()
