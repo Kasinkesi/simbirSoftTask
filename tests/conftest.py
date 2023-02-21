@@ -5,6 +5,7 @@ from datetime import datetime
 
 @pytest.fixture(scope="session")
 def browser() -> object:
+    # для локального запуска:
     # driver = webdriver.Chrome()
     driver = webdriver.Remote(
         command_executor='http://localhost:4444',

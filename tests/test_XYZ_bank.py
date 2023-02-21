@@ -34,7 +34,7 @@ def attach_transactions_csv(transactions_table: list[list]) -> None:
 def test_smoke(browser, fib_from_date):
     # открывается главная страница
     home_page = HomePage(browser, BASE_URL)
-    home_page.open()
+    home_page.open_base_url()
     # переход на страницу авторизации
     home_page.go_to_customer_login_page()
     login_page = CustomerLoginPage(browser, browser.current_url)
