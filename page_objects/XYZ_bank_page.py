@@ -10,7 +10,6 @@ from selenium.webdriver.support.select import Select
 import allure
 
 
-
 class HomePageLocators:
     CUSTOMER_LOGIN_BUTTON = (By.XPATH, '//button[@ng-click = "customer()"]')
 
@@ -39,14 +38,14 @@ class TransactionsPageLocators:
 
 class HomePage(BasePage):
     @allure.step
-    def go_to_customer_login_page(self):
+    def go_to_customer_login_page(self) -> None:
         customer_login_btn = self.find_elem(HomePageLocators.CUSTOMER_LOGIN_BUTTON)
         customer_login_btn.click()
 
 
 class CustomerLoginPage(BasePage):
     @allure.step('Login with name: {name}')
-    def login_with_name(self, name):
+    def login_with_name(self, name: str) -> None:
         select_element = self.find_elem(CustomerPageLocators.NAME_LIST)
         select = Select(select_element)
         select.select_by_visible_text(name)
@@ -55,11 +54,11 @@ class CustomerLoginPage(BasePage):
 
 
 class AccountPage(BasePage):
-    def _datetime_format(self, datetime_obj):
+    def _datetime_format(self, datetime_obj: object) -> str:
         return datetime_obj.strftime("%b %d, %Y %-I:%M:%S %p")
 
     @allure.step('Make deposite: {value}')
-    def make_deposit(self, value):
+    def make_deposit(self, value: int) -> list[str]:
         deposite_btn = self.find_elem(AccountPageLocators.DEPOSIT_BUTTON)
         deposite_btn.click()
         input_field = self.find_elem(AccountPageLocators.DEPOSIT_INPUT_FIELD)
@@ -72,7 +71,7 @@ class AccountPage(BasePage):
         return [now, str(value), 'Credit']
 
     @allure.step('Make_withdrawl {value}')
-    def make_withdrawl(self, value):
+    def make_withdrawl(self, value: int) -> list[str]:
         withdrawl_btn = self.find_elem(AccountPageLocators.WITHDRAWL_BUTTON)
         withdrawl_btn.click()
         input_field = self.find_elem(AccountPageLocators.WITHDRAWL_INPUT_FIELD)
@@ -85,33 +84,33 @@ class AccountPage(BasePage):
         return [now, str(value), 'Debit']
 
     @allure.step("Get balance")
-    def balance(self):
+    def balance(self) -> str:
         balance_elem = self.find_elem(AccountPageLocators.BALANCE)
         return balance_elem.text
 
     @allure.step("Check balance equal to {expected}")
-    def check_balance(self, balance, expected):
+    def check_balance(self, balance: str, expected: str) -> None:
         assert balance == expected
 
     @allure.step
-    def go_to_transactions_page(self):
+    def go_to_transactions_page(self) -> None:
         transactrions_btn = self.find_elem(AccountPageLocators.TRANSACTIONS_BUTTON)
         transactrions_btn.click()
 
 
 class TransactionsPage(BasePage):
     @allure.step
-    def back_to_account_page(self):
+    def back_to_account_page(self) -> None:
         back_btn = self.find_elem(TransactionsPageLocators.BACK_BUTTON)
         back_btn.click()
 
     @allure.step
-    def reset_transactions(self):
+    def reset_transactions(self) -> None:
         reset_btn = self.find_elem(TransactionsPageLocators.RESET_BUTTON)
         reset_btn.click()
 
     @allure.step
-    def get_table(self):
+    def get_table(self) -> list[list]:
         table = []
         table_rows = self.find_elems(TransactionsPageLocators.TABLE_BODY_ROWS)
         for row in table_rows:
@@ -120,6 +119,6 @@ class TransactionsPage(BasePage):
         return table
 
     @allure.step
-    def check_tranactions_in_table(self, deposite, withdrawl, table):
+    def check_tranactions_in_table(self, deposite: list[str], withdrawl: list[str], table: list[list]) -> None:
         assert deposite in table
         assert withdrawl in table

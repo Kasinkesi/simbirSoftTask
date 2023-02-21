@@ -10,13 +10,13 @@ from page_objects.XYZ_bank_page import HomePage, CustomerLoginPage, AccountPage,
 BASE_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login"
 
 
-def make_csv_from(table):
+def make_csv_from(table: list[list]) -> None:
     with open('transactions.csv', 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerows(table)
 
 
-def reformated_table_for_csv(table):
+def reformated_table_for_csv(table: list[list]) -> list[list]:
     reformated_table = table[:]
     for row in reformated_table:
         dt_object = datetime.strptime(row[0], "%b %d, %Y %I:%M:%S %p")
@@ -25,7 +25,7 @@ def reformated_table_for_csv(table):
 
 
 @allure.step
-def attach_transactions_csv(transactions_table):
+def attach_transactions_csv(transactions_table: list[list]) -> None:
     make_csv_from(reformated_table_for_csv(transactions_table))
     allure.attach.file('./transactions.csv', name='transactions.csv', attachment_type=allure.attachment_type.CSV)
     os.remove('./transactions.csv')
