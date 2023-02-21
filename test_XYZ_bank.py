@@ -37,13 +37,13 @@ def test_smoke(browser, fib_from_date):
     withdrawl = account_page.make_withdrawl(fib_from_date)
     # проверка баланса
     balance = account_page.balance()
-    assert balance == '0'
+    expected_balance = "0"
+    account_page.check_balance(balance, expected_balance)
     # проверка наличия тразакций
     account_page.go_to_transactions_page()
     transactions_page = TransactionsPage(browser, browser.current_url)
     transactions_table = transactions_page.get_table()
-    assert deposit in transactions_table
-    assert withdrawl in transactions_table
+    transactions_page.check_tranactions_in_table(deposit, withdrawl, transactions_table)
     # формируется CSV файл и прикрепляется к отчету
     make_csv_from(reformated_table_for_csv(transactions_table))
     allure.attach.file('./transactions.csv', name='transactions.csv', attachment_type=allure.attachment_type.CSV)
