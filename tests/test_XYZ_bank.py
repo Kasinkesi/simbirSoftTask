@@ -1,8 +1,11 @@
+import sys
+import os
+
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from datetime import datetime
 import csv
-import os
 import allure
-from XYZ_bank_page import HomePage, CustomerLoginPage, AccountPage, TransactionsPage
+from page_objects.XYZ_bank_page import HomePage, CustomerLoginPage, AccountPage, TransactionsPage
 
 BASE_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login"
 
@@ -20,11 +23,13 @@ def reformated_table_for_csv(table):
         row[0] = dt_object.strftime("%d %B, %Y %H:%M:%S")
     return reformated_table
 
+
 @allure.step
 def attach_transactions_csv(transactions_table):
     make_csv_from(reformated_table_for_csv(transactions_table))
     allure.attach.file('./transactions.csv', name='transactions.csv', attachment_type=allure.attachment_type.CSV)
     os.remove('./transactions.csv')
+
 
 def test_smoke(browser, fib_from_date):
     # открывается главная страница
