@@ -20,6 +20,11 @@ def reformated_table_for_csv(table):
         row[0] = dt_object.strftime("%d %B, %Y %H:%M:%S")
     return reformated_table
 
+@allure.step
+def attach_transactions_csv(transactions_table):
+    make_csv_from(reformated_table_for_csv(transactions_table))
+    allure.attach.file('./transactions.csv', name='transactions.csv', attachment_type=allure.attachment_type.CSV)
+    os.remove('./transactions.csv')
 
 def test_smoke(browser, fib_from_date):
     # открывается главная страница
@@ -45,6 +50,4 @@ def test_smoke(browser, fib_from_date):
     transactions_table = transactions_page.get_table()
     transactions_page.check_tranactions_in_table(deposit, withdrawl, transactions_table)
     # формируется CSV файл и прикрепляется к отчету
-    make_csv_from(reformated_table_for_csv(transactions_table))
-    allure.attach.file('./transactions.csv', name='transactions.csv', attachment_type=allure.attachment_type.CSV)
-    os.remove('./transactions.csv')
+    attach_transactions_csv(transactions_table)
